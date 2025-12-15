@@ -33,3 +33,7 @@ window.state = {
     toast: null               // {text, ttl}
   }
 };
+
+// Failsafe spawn
+state.sim.x = Math.max(100, Math.min(state.sim.x, map.width * map.tile - 100));
+state.sim.y = Math.max(100, Math.min(state.sim.y, map.height * map.tile - 100));
