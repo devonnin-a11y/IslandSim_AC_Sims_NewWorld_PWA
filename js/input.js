@@ -113,3 +113,10 @@ window.toggleJournal = function(){
   el.classList.toggle("show");
   if(el.classList.contains("show")) renderQuests();
 };
+
+// Alias so the HUD button works even if you call refocusCamera()
+window.refocusCamera = function () {
+  state.camera.follow = true;
+  state.ui.toast = { text: "Camera refocused", ttl: 90 };
+};
+
