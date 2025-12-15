@@ -1,33 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Island Sim (AC x Sims x New World)</title>
+  <title>IslandSim — AC x Sims x New World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
 <div id="game">
-  <canvas id="world" width="800" height="450"></canvas>
+  <canvas id="world" width="960" height="540"></canvas>
 
   <div id="hud">
     <div class="hud-top">
       <div class="sim-info">
         <div id="sim-name">Sim</div>
-        <div id="sim-mood">🙂 Happy</div>
+        <div id="sim-mood">🙂 Fine</div>
       </div>
-      <button class="btn" onclick="togglePhone()">📱</button>
+      <div class="hud-actions">
+        <button class="btn" onclick="togglePhone()">📱</button>
+        <button class="btn" onclick="toggleBuild()">🏠</button>
+      </div>
+    </div>
+
+    <div class="hud-mid">
+      <div class="needs">
+        <div class="need">🍽️ <span id="need-hunger"></span></div>
+        <div class="need">⚡ <span id="need-energy"></span></div>
+        <div class="need">💬 <span id="need-social"></span></div>
+      </div>
+      <div class="time">
+        <button class="btn" onclick="setSpeed(0)">⏸️</button>
+        <button class="btn" onclick="setSpeed(1)">▶️</button>
+        <button class="btn" onclick="setSpeed(2)">⏩</button>
+        <button class="btn" onclick="setSpeed(3)">⏭️</button>
+      </div>
     </div>
 
     <div class="hud-bottom">
       <div class="dpad">
         <button onclick="move('up')">⬆️</button>
-        <div>
+        <div class="dpad-row">
           <button onclick="move('left')">⬅️</button>
           <button onclick="move('down')">⬇️</button>
           <button onclick="move('right')">➡️</button>
         </div>
+      </div>
+      <div class="queue">
+        <div class="card-title">Queue</div>
+        <div id="queue"></div>
       </div>
     </div>
   </div>
@@ -36,16 +58,45 @@
 <div id="phone" onclick="togglePhone()">
   <div class="phone-card" onclick="event.stopPropagation()">
     <div class="phone-grid">
-      <button onclick="queue('EAT')">🍎 Eat</button>
-      <button onclick="queue('REST')">😴 Rest</button>
-      <button onclick="queue('SOCIAL')">💬 Talk</button>
-      <button onclick="queue('CRAFT')">🛠 Craft</button>
+      <button onclick="queueAction('EAT')">🍎 Eat</button>
+      <button onclick="queueAction('REST')">😴 Rest</button>
+      <button onclick="queueAction('SOCIAL')">💬 Talk</button>
+      <button onclick="queueAction('GATHER')">🌿 Gather</button>
+      <button onclick="queueAction('CRAFT')">🛠 Craft</button>
+      <button onclick="openCAS()">🎨 CAS</button>
     </div>
   </div>
 </div>
 
+<div id="cas" class="panel">
+  <div class="panel-card">
+    <h3>Create-A-Sim</h3>
+    <label>Name</label>
+    <input id="cas-name" placeholder="Name" />
+    <label>Body Height</label>
+    <input type="range" min="0" max="100" value="50" id="cas-height"/>
+    <label>Body Weight</label>
+    <input type="range" min="0" max="100" value="50" id="cas-weight"/>
+    <div class="row">
+      <button class="btn" onclick="saveCAS()">Save</button>
+      <button class="btn" onclick="closeCAS()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="build" class="panel">
+  <div class="panel-card">
+    <h3>Build / Lots</h3>
+    <button class="btn" onclick="placeHouse()">Place House</button>
+    <button class="btn" onclick="closeBuild()">Close</button>
+  </div>
+</div>
+
 <script src="js/state.js"></script>
+<script src="js/map.js"></script>
 <script src="js/input.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/autonomy.js"></script>
 <script src="js/world.js"></script>
 <script src="js/game.js"></script>
 </body>

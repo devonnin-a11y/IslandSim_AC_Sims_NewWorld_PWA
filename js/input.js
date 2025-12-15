@@ -1,23 +1,23 @@
-window.move = function(dir) {
-  const sim = state.sim;
-  if (dir === "up") sim.y -= sim.speed;
-  if (dir === "down") sim.y += sim.speed;
-  if (dir === "left") sim.x -= sim.speed;
-  if (dir === "right") sim.x += sim.speed;
-};
 
-window.queue = function(action) {
-  state.sim.queue.push(action);
-  console.log("Queued:", action);
+window.move=dir=>{
+  const s=state.sim;
+  if(dir==="up")s.y-=s.speed;
+  if(dir==="down")s.y+=s.speed;
+  if(dir==="left")s.x-=s.speed;
+  if(dir==="right")s.x+=s.speed;
 };
-
-window.togglePhone = function() {
-  document.getElementById("phone").classList.toggle("show");
+window.queueAction=type=>state.sim.queue.push({type,progress:0});
+window.togglePhone=()=>phone.classList.toggle("show");
+window.openCAS=()=>cas.classList.add("show");
+window.closeCAS=()=>cas.classList.remove("show");
+window.toggleBuild=()=>build.classList.toggle("show");
+window.closeBuild=()=>build.classList.remove("show");
+window.saveCAS=()=>{
+  state.sim.name=cas-name.value||state.sim.name;
+  state.sim.appearance.height=cas-height.value/100;
+  state.sim.appearance.weight=cas-weight.value/100;
+  closeCAS();
 };
-
-document.addEventListener("keydown", e => {
-  if (e.key === "ArrowUp") move("up");
-  if (e.key === "ArrowDown") move("down");
-  if (e.key === "ArrowLeft") move("left");
-  if (e.key === "ArrowRight") move("right");
+document.addEventListener("keydown",e=>{
+  if(e.key.startsWith("Arrow"))move(e.key.replace("Arrow","").toLowerCase());
 });
