@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Island Sim (AC x Sims x New World)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="game">
+  <canvas id="world" width="800" height="450"></canvas>
+
+  <div id="hud">
+    <div class="hud-top">
+      <div class="sim-info">
+        <div id="sim-name">Sim</div>
+        <div id="sim-mood">🙂 Happy</div>
+      </div>
+      <button class="btn" onclick="togglePhone()">📱</button>
+    </div>
+
+    <div class="hud-bottom">
+      <div class="dpad">
+        <button onclick="move('up')">⬆️</button>
+        <div>
+          <button onclick="move('left')">⬅️</button>
+          <button onclick="move('down')">⬇️</button>
+          <button onclick="move('right')">➡️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="phone" onclick="togglePhone()">
+  <div class="phone-card" onclick="event.stopPropagation()">
+    <div class="phone-grid">
+      <button onclick="queue('EAT')">🍎 Eat</button>
+      <button onclick="queue('REST')">😴 Rest</button>
+      <button onclick="queue('SOCIAL')">💬 Talk</button>
+      <button onclick="queue('CRAFT')">🛠 Craft</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/input.js"></script>
+<script src="js/world.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

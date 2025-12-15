@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: system-ui;
+  background: #f6f3ea;
+}
+
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+canvas {
+  background: linear-gradient(#87ceeb, #7ec850);
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+#hud {
+  width: 90%;
+  max-width: 820px;
+  background: #efe8d8;
+  border-radius: 30px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.hud-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dpad {
+  display: flex;
+  gap: 10px;
+}
+
+.dpad button {
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+}
+
+#phone {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.2);
+}
+
+#phone.show {
+  display: flex;
+}
+
+.phone-card {
+  background: #fff7e6;
+  border-radius: 30px;
+  padding: 20px;
+}
+
+.phone-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
