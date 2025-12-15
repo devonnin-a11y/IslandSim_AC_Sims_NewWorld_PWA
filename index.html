@@ -10,25 +10,26 @@
 <body>
 
 <div id="game">
-  <canvas id="world" width="960" height="540"></canvas>
+  <div class="topbar">
+    <div class="chip">🗺️ <span id="area-name">Meadow</span></div>
+    <div class="topbar-right">
+      <button class="btn" onclick="refocus()">🎯</button>
+      <button class="btn" onclick="togglePhone()">📱</button>
+      <button class="btn" onclick="toggleBuild()">🏠</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <canvas id="world" width="960" height="540"></canvas>
+    <canvas id="minimap" width="160" height="160" aria-label="Minimap"></canvas>
+  </div>
 
   <div id="hud">
     <div class="hud-top">
       <div class="sim-info">
         <div id="sim-name">Sim</div>
         <div id="sim-mood">🙂 Fine</div>
-      </div>
-      <div class="hud-actions">
-        <button class="btn" onclick="togglePhone()">📱</button>
-        <button class="btn" onclick="toggleBuild()">🏠</button>
-      </div>
-    </div>
-
-    <div class="hud-mid">
-      <div class="needs">
-        <div class="need">🍽️ <span id="need-hunger"></span></div>
-        <div class="need">⚡ <span id="need-energy"></span></div>
-        <div class="need">💬 <span id="need-social"></span></div>
+        <div id="sim-status" class="muted">Ready</div>
       </div>
       <div class="time">
         <button class="btn" onclick="setSpeed(0)">⏸️</button>
@@ -38,15 +39,51 @@
       </div>
     </div>
 
-    <div class="hud-bottom">
-      <div class="dpad">
-        <button onclick="move('up')">⬆️</button>
-        <div class="dpad-row">
-          <button onclick="move('left')">⬅️</button>
-          <button onclick="move('down')">⬇️</button>
-          <button onclick="move('right')">➡️</button>
+    <div class="hud-mid">
+      <div class="needs">
+        <div class="need">
+          <div class="need-row"><span>🍽️ Hunger</span><b id="need-hunger"></b></div>
+          <div class="bar"><div id="bar-hunger" class="fill"></div></div>
+        </div>
+        <div class="need">
+          <div class="need-row"><span>⚡ Energy</span><b id="need-energy"></b></div>
+          <div class="bar"><div id="bar-energy" class="fill"></div></div>
+        </div>
+        <div class="need">
+          <div class="need-row"><span>💬 Social</span><b id="need-social"></b></div>
+          <div class="bar"><div id="bar-social" class="fill"></div></div>
+        </div>
+        <div class="need">
+          <div class="need-row"><span>🫧 Hygiene</span><b id="need-hygiene"></b></div>
+          <div class="bar"><div id="bar-hygiene" class="fill"></div></div>
+        </div>
+        <div class="need">
+          <div class="need-row"><span>🎯 Fun</span><b id="need-fun"></b></div>
+          <div class="bar"><div id="bar-fun" class="fill"></div></div>
         </div>
       </div>
+    </div>
+
+    <div class="hud-bottom">
+      <div class="dpad">
+        <button onclick="moveHold('up')">⬆️</button>
+        <div class="dpad-row">
+          <button onclick="moveHold('left')">⬅️</button>
+          <button onclick="moveHold('down')">⬇️</button>
+          <button onclick="moveHold('right')">➡️</button>
+        </div>
+      </div>
+
+      <div class="actions-strip">
+        <button class="pill" onclick="queueAction('EAT')">🍎</button>
+        <button class="pill" onclick="queueAction('REST')">😴</button>
+        <button class="pill" onclick="queueAction('SOCIAL')">💬</button>
+        <button class="pill" onclick="queueAction('GATHER')">🌿</button>
+        <button class="pill" onclick="queueAction('CRAFT')">🛠️</button>
+        <button class="pill" onclick="queueAction('BATH')">🫧</button>
+        <button class="pill" onclick="queueAction('PLAY')">🎯</button>
+      </div>
+
       <div class="queue">
         <div class="card-title">Queue</div>
         <div id="queue"></div>
@@ -55,21 +92,51 @@
   </div>
 </div>
 
+<!-- Phone -->
 <div id="phone" onclick="togglePhone()">
   <div class="phone-card" onclick="event.stopPropagation()">
     <div class="phone-grid">
       <button onclick="queueAction('EAT')">🍎 Eat</button>
       <button onclick="queueAction('REST')">😴 Rest</button>
       <button onclick="queueAction('SOCIAL')">💬 Talk</button>
+      <button onclick="queueAction('BATH')">🫧 Clean</button>
+      <button onclick="queueAction('PLAY')">🎯 Play</button>
       <button onclick="queueAction('GATHER')">🌿 Gather</button>
       <button onclick="queueAction('CRAFT')">🛠 Craft</button>
       <button onclick="openCAS()">🎨 CAS</button>
+      <button onclick="toggleJournal()">📒 Journal</button>
+      <button onclick="toggleInventory()">🎒 Inventory</button>
     </div>
   </div>
 </div>
 
-<div id="cas" class="panel">
-  <div class="panel-card">
+<!-- Journal -->
+<div id="journal" class="panel" onclick="toggleJournal()">
+  <div class="panel-card" onclick="event.stopPropagation()">
+    <h3>Journal</h3>
+    <div class="muted">Quests & milestones (New World twist)</div>
+    <div id="quests"></div>
+    <div class="row">
+      <button class="btn" onclick="toggleJournal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inventory -->
+<div id="inventory" class="panel" onclick="toggleInventory()">
+  <div class="panel-card" onclick="event.stopPropagation()">
+    <h3>Inventory</h3>
+    <div class="muted">Gather → Craft loops live here.</div>
+    <div id="inv"></div>
+    <div class="row">
+      <button class="btn" onclick="toggleInventory()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAS -->
+<div id="cas" class="panel" onclick="closeCAS()">
+  <div class="panel-card" onclick="event.stopPropagation()">
     <h3>Create-A-Sim</h3>
     <label>Name</label>
     <input id="cas-name" placeholder="Name" />
@@ -84,20 +151,31 @@
   </div>
 </div>
 
-<div id="build" class="panel">
-  <div class="panel-card">
+<!-- Build -->
+<div id="build" class="panel" onclick="closeBuild()">
+  <div class="panel-card" onclick="event.stopPropagation()">
     <h3>Build / Lots</h3>
-    <button class="btn" onclick="placeHouse()">Place House</button>
-    <button class="btn" onclick="closeBuild()">Close</button>
+    <div class="muted">Tap “Place House”, then click on the world.</div>
+    <div class="row">
+      <button class="btn" onclick="startPlaceHouse()">Place House</button>
+      <button class="btn" onclick="closeBuild()">Close</button>
+    </div>
   </div>
 </div>
 
 <script src="js/state.js"></script>
-<script src="js/map.js"></script>
+<script src="js/areas.js"></script>
+<script src="js/mapgen.js"></script>
 <script src="js/input.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/needs.js"></script>
+<script src="js/moodlets.js"></script>
+<script src="js/inventory.js"></script>
+<script src="js/quests.js"></script>
 <script src="js/actions.js"></script>
 <script src="js/autonomy.js"></script>
 <script src="js/world.js"></script>
+<script src="js/ui.js"></script>
 <script src="js/game.js"></script>
 </body>
 </html>
